@@ -1,0 +1,10 @@
+
+.scrollbarHide::-webkit-scrollbar {
+    display: none;
+  }
+  
+  
+  .scrollbarHide {
+    scrollbar-width: none;
+  }
+  

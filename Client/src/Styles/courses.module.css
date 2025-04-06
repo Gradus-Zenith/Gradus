@@ -1,0 +1,242 @@
+
+.codepen {
+    display: block;
+    cursor: pointer;
+    color: white;
+    margin: 0 auto;
+    position: relative;
+    text-decoration: none;
+    font-weight: 600;
+    border-radius: 6px;
+    overflow: hidden;
+    padding: 3px;
+    isolation: isolate;
+    width: 12.4rem; 
+  }
+  
+  .codepen::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 400%;
+    height: 100%;
+    background: linear-gradient(115deg,#4fcf70,#fad648,#a767e5,#44ce7b,#44ce7b);
+    background-size: 25% 100%;
+    animation: an-at-keyframe-css-at-rule-that-translates-via-the-transform-property-the-background-by-negative-25-percent-of-its-width-so-that-it-gives-a-nice-border-animation_-We-use-the-translate-property-to-have-a-nice-transition-so-it_s-not-a-jerk-of-a-start-or-stop .75s linear infinite;
+    animation-play-state: paused;
+    translate: -5% 0%;
+    transition: translate 0.25s ease-out;
+  }
+  
+  .codepen:hover::before {
+    animation-play-state: running;
+    transition-duration: 0.75s;
+    translate: 0% 0%;
+  }
+  
+  @keyframes an-at-keyframe-css-at-rule-that-translates-via-the-transform-property-the-background-by-negative-25-percent-of-its-width-so-that-it-gives-a-nice-border-animation_-We-use-the-translate-property-to-have-a-nice-transition-so-it_s-not-a-jerk-of-a-start-or-stop {
+    to {
+      transform: translateX(-25%);
+    }
+  }
+  
+  .codepen span {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 1rem 1.5rem;
+    font-size: 1.1rem;
+    background: #000;
+    border-radius: 3px;
+    height: 1.5rem;
+    /* background-color: yellow; */
+    width: 12rem;
+  }
+
+
+  /* options */
+
+  .input {
+    display: flex;
+    position:relative;
+    left: 35%;
+    width: 40%;
+  }
+  
+  .glass {
+    z-index: 2;
+    height: 60px;
+    width: 60px;
+    margin-right: 25px;
+    padding: 8px;
+    background-color: rgba(94, 238, 134, 0.652);
+    border-radius: 35px;
+    box-shadow: rgba(50, 50, 93, 0.2) 0px 25px 50px -10px,
+      rgba(0, 0, 0, 0.25) 0px 10px 30px -15px,
+      rgba(10, 37, 64, 0.26) 0px -2px 6px 0px inset;
+    backdrop-filter: blur(8px);
+    position: relative;
+    right: 1rem;
+  }
+  
+  .inner {
+    width: 100%;
+    height: 100%;
+    border-color: #00ff88;
+    border-width: 9px;
+    border-style: solid;
+    border-radius: 30px;
+  }
+  
+  .selector {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .choice {
+    margin: 10px 0 10px 0;
+    display: flex;
+    align-items: center;
+  }
+  
+  .choice > div {
+    position: relative;
+    width: 30px;
+    height: 30px;
+    margin-right: 15px;
+    z-index: 0;
+  }
+  
+  .circle {
+    appearance: none;
+    height: 100%;
+    width: 100%;
+    border-radius: 100%;
+    border-width: 9px;
+    border-style: solid;
+    border-color: rgba(245, 245, 245, 0.45);
+    cursor: pointer;
+    box-shadow: 0px 0px 20px -13px gray, 0px 0px 20px -14px gray inset;
+  }
+  
+  .ball {
+    z-index: 1;
+    position: absolute;
+    inset: 0px;
+    transform: translateX(-95px);
+    box-shadow: rgba(0, 0, 0, 0.17) 0px -10px 10px 0px inset,
+      rgba(0, 0, 0, 0.15) 0px -15px 15px 0px inset,
+      rgba(0, 0, 0, 0.1) 0px -40px 20px 0px inset, rgba(0, 0, 0, 0.06) 0px 2px 1px,
+      rgba(0, 0, 0, 0.09) 0px 4px 2px, rgba(0, 0, 0, 0.09) 0px 8px 4px,
+      rgba(0, 0, 0, 0.09) 0px 16px 8px, rgba(0, 0, 0, 0.09) 0px 32px 16px,
+      0px -1px 15px -8px rgba(0, 0, 0, 0.09);
+    border-radius: 100%;
+    transition: transform 800ms cubic-bezier(1, -0.4, 0, 1.4);
+    background-color: #00ff88;
+  }
+  
+  .circle:checked + .ball {
+    transform: translateX(0px);
+  }
+  
+  .name {
+    color: white;
+    font-size: 25px;
+    cursor: pointer;
+  }
+
+  /* button */
+  .button {
+    --color: #00ff88;
+    padding: 0.8em 1.7em;
+    background-color: transparent;
+    border-radius: .3em;
+    position: relative;
+    top: 30px;
+    left: 10px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: .5s;
+    font-weight: 600;
+    font-size: 17px;
+    border: 1px solid;
+    font-family: inherit;
+    text-transform: uppercase;
+    color: var(--color);
+    z-index: 1;
+    margin-top: 2rem;
+   }
+   
+   .button::before, .button::after {
+    content: '';
+    display: block;
+    width: 50px;
+    height: 50px;
+    transform: translate(-50%, -50%);
+    position: absolute;
+    border-radius: 50%;
+    z-index: -1;
+    background-color: var(--color);
+    transition: 1s ease;
+   }
+   
+   .button::before {
+    top: -1em;
+    left: -1em;
+   }
+   
+   .button::after {
+    left: calc(100% + 1em);
+    top: calc(100% + 1em);
+   }
+   
+   .button:hover::before, .button:hover::after {
+    height: 410px;
+    width: 410px;
+   }
+   
+   .button:hover {
+    color: rgb(10, 25, 30);
+   }
+   
+   .button:active {
+    filter: brightness(.8);
+   }
+   
+   /* background-animation */
+   .change {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: black;
+    overflow: hidden;
+    z-index: -1;
+}
+
+.orb {
+    width: 70vh;
+    height: 70vh;
+    position: absolute;
+    border-radius: 50%;
+    background: linear-gradient(180deg, #00ff88 0%, #f2994a 100%);
+    filter: blur(250px);
+    animation: moveOrb 15s alternate linear infinite;
+}
+
+@keyframes moveOrb {
+    0% {
+        transform: translate(0, 0);
+    }
+    50% {
+        transform: translate(100vw, 100vh);
+    }
+    100% {
+        transform: translate(0, 0);
+    }
+}
+
+

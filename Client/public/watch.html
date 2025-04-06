@@ -1,0 +1,947 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Gradus Video Analysis</title>
+    <link rel="stylesheet" href="style1.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <!-- Update Firebase SDK scripts -->
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-analytics-compat.js"></script>
+    <script>
+        // Initialize Firebase
+        const firebaseConfig = {
+  apiKey: "AIzaSyByHlcafaGGi9y4Oc5WvWPC4Yc-ZTh-IZ0",
+  authDomain: "gradus-26a77.firebaseapp.com",
+  projectId: "gradus-26a77",
+  storageBucket: "gradus-26a77.firebasestorage.app",
+  messagingSenderId: "818433218009",
+  appId: "1:818433218009:web:0dd0cfc85b484bfc7f75c8",
+  measurementId: "G-C3R3JBHL1P"
+};
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+
+        // Initialize Auth
+        firebase.auth().onAuthStateChanged((user) => {
+            if (user) {
+                // Store user ID in sessionStorage for cross-origin access
+                sessionStorage.setItem('userId', user.uid);
+                // console.log('User logged in successfully:', user.email);
+            } else {
+                // console.log('No user is signed in.');
+                sessionStorage.removeItem('userId');
+            }
+        });
+    </script>
+    <style>
+        .tag {
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 14px;
+            font-weight: 500;
+            display: inline-block;
+        }
+
+        /* Remove the class-based colors and use direct styling */
+        #difficultyLevelTag[data-level="beginner"] {
+            background-color: #4CAF50 !important;
+            /* Green */
+            color: white !important;
+        }
+
+        #difficultyLevelTag[data-level="intermediate"] {
+            background-color: #FFC107 !important;
+            /* Yellow */
+            color: black !important;
+        }
+
+        #difficultyLevelTag[data-level="advanced"] {
+            background-color: #F44336 !important;
+            /* Red */
+            color: white !important;
+        }
+
+        .tag-row {
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .tag-row:last-child {
+            margin-bottom: 0;
+        }
+
+        .tag-info {
+            background-color: #1a1a1a;
+            padding: 12px;
+            border-radius: 8px;
+        }
+
+        .tag-info>div {
+            margin-bottom: 8px;
+        }
+
+        .tag-info>div:last-child {
+            margin-bottom: 0;
+        }
+
+        /* Add navbar styles */
+        .navbar {
+            width: 1670px;
+            height: 65px;
+            opacity: 1;
+            background-color: #505050;
+            position: fixed;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+        }
+
+        .navbar-logo {
+            height: 40px;
+        }
+
+        .navbar-buttons {
+            display: flex;
+            gap: 20px;
+        }
+
+        .switch-button {
+            padding: 12px 32px;
+            border-radius: 30px;
+            border: 2px solid #000000;
+            /* Increased border thickness */
+            background-color: white;
+            color: #000000;
+            cursor: pointer;
+            font-size: 18px;
+            /* Increased font size */
+            font-weight: 600;
+            /* Increased font weight */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            /* Increased shadow intensity */
+            transition: all 0.2s ease;
+            margin-right: 15px;
+            letter-spacing: 0.5px;
+            /* Added letter spacing */
+        }
+
+        .switch-button:hover {
+            background-color: #f0f0f0;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.25);
+            /* Increased hover shadow */
+            transform: translateY(-5px);
+            /* More pronounced lift effect */
+        }
+
+        .profile-container {
+            position: relative;
+            margin-right: 150px;
+        }
+
+        .profile-image {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: #808080;
+            /* Changed to gray as per image */
+            cursor: pointer;
+        }
+
+        .profile-popup {
+            position: absolute;
+            top: 50px;
+            right: 0;
+            width: 200px;
+            background-color: #000000;
+            border-radius: 15px;
+            padding: 20px;
+            display: none;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .profile-popup.show {
+            display: block;
+            background-color: #FFFFFF;
+        }
+
+        .profile-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+
+        }
+
+        .profile-header img {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            margin-right: 15px;
+        }
+
+        .profile-name {
+            color: white;
+        }
+
+        .view-profile {
+            color: white;
+            text-decoration: underline;
+            font-size: 14px;
+            opacity: 0.8;
+        }
+
+        .menu-item {
+            background-color: #000000;
+            color: white;
+            padding: 15px;
+            margin: 8px 0;
+            border-radius: 10px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .menu-item:hover {
+            background-color: #1a1a1a;
+        }
+
+        /* Adjust body to account for navbar */
+        body {
+            margin: 0;
+            padding: 20px;
+            font-family: Arial, sans-serif;
+            background-color: #000000;
+            color: #ffffff;
+            padding-top: 111px;
+        }
+
+        .gradus-text {
+            text-decoration: none;
+            background-color: #505050;
+            display: flex;
+            align-items: center;
+        }
+
+        .gradus-text img {
+            height: 40px;
+            margin-left: 150px;
+            background-color: #505050;
+        }
+
+        .popup {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 1001;
+        }
+
+        .popup-content {
+            position: relative;
+            background-color: #1a1a1a;
+            margin: 10% auto;
+            padding: 20px;
+            width: 90%;
+            max-width: 500px;
+            border-radius: 8px;
+            color: white;
+        }
+
+        .close-popup {
+            position: absolute;
+            right: 15px;
+            top: 10px;
+            font-size: 24px;
+            cursor: pointer;
+            color: #ffffff;
+        }
+
+        .playlist-item {
+            display: flex;
+            align-items: center;
+            margin: 10px 0;
+            padding: 10px;
+            background-color: #2a2a2a;
+            border-radius: 4px;
+        }
+
+        .playlist-checkbox {
+            margin-right: 10px;
+        }
+
+        #createNewPlaylist {
+            margin-top: 20px;
+            padding: 8px 16px;
+            background-color: #00FDB1;
+            color: black;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .playlist-section {
+            margin: 15px 0;
+        }
+
+        .category-item {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            margin: 5px 0;
+            background-color: #2a2a2a;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .category-item:hover {
+            background-color: #3a3a3a;
+        }
+
+        #newCategoryName {
+            width: 100%;
+            padding: 8px;
+            margin: 10px 0;
+            background-color: #2a2a2a;
+            border: 1px solid #3a3a3a;
+            border-radius: 4px;
+            color: white;
+        }
+
+        #createCategoryBtn {
+            padding: 8px 16px;
+            background-color: #00FDB1;
+            color: black;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        #errorMessage {
+            background-color: rgba(255, 0, 0, 0.1);
+            border: 1px solid red;
+            padding: 10px;
+            border-radius: 4px;
+            margin-bottom: 15px;
+        }
+
+        .popup-content {
+            color: white;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        #newCategoryName {
+            width: calc(100% - 20px);
+            margin: 10px 0;
+            padding: 10px;
+            border-radius: 4px;
+            border: 1px solid #3a3a3a;
+            background-color: #2a2a2a;
+            color: white;
+        }
+
+        #createCategoryBtn {
+            width: 100%;
+            padding: 10px;
+            margin-top: 10px;
+            background-color: #00FDB1;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        #createCategoryBtn:hover {
+            background-color: #00d494;
+        }
+
+        /* Add these to your existing styles */
+        .category-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            margin: 10px 0;
+            background-color: #2a2a2a;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .category-item:hover {
+            background-color: #3a3a3a;
+        }
+
+        .category-name {
+            font-size: 16px;
+            font-weight: 500;
+        }
+
+        .category-action {
+            font-size: 14px;
+            color: #00FDB1;
+            opacity: 0.8;
+        }
+
+        #existingCategories {
+            margin-top: 15px;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .your-categories-section {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #3a3a3a;
+        }
+
+        .category-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .channel-name {
+            font-size: 12px;
+            color: #888;
+            margin-top: 4px;
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar">
+        <div class="navbar-buttons">
+            <a href="#" class="gradus-text">
+                <img src="https://res.cloudinary.com/dlsgdlo8u/image/upload/v1742127578/gradus_logo-rbg_wuzawn.png"
+                    alt="Gradus" style="height: 50px;width: 170px; margin-left: 150px; background-color: #505050;">
+            </a>
+        </div>
+        <div class="navbar-buttons">
+            <button class="switch-button"
+                style="height: 40px; justify-content: center; align-items: center;">Switch</button>
+            <div class="profile-container">
+                <div class="profile-image" id="profileButton"></div>
+                <div class="profile-popup" id="profileMenu">
+                    <div class="profile-header">
+                        <img src="path/to/profile-image.jpg" style="border: 2px solid black;" alt="Profile">
+                        <div>
+                            <div class="profile-name" style="color: black;margin-left: 40px;font-size: 30px;">Name</div>
+                            <a href="https://gradus1-0-1.onrender.com//profile" class="view-profile"
+                                style="color: black;margin-left: 40px">View Profile></a>
+                        </div>
+                    </div>
+                    <a href="https://gradus1-0-1.onrender.com//playlists" class="menu-item">Saved Playlists</a>
+                    <a href="https://gradus1-0-1.onrender.com//revise" class="menu-item">Revision Section</a>
+
+                    <a href="https://gradus1-0-1.onrender.com//login" class="menu-item">Log-out <span
+                            style="color: red;">↪</span></a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <body>
+        <div class="top-section">
+            <div class="video-section">
+                <div class="video-container" style="height: 550px;">
+                    <iframe id="player" allowfullscreen></iframe>
+                </div>
+                <div class="video-title-container">
+                    <h1 id="videoTitle" class="video-title"></h1>
+                </div>
+                <div class="button-group">
+                    <button class="schedule-button" id="scheduleButton">
+                        <i class="fas fa-calendar-plus"></i>Schedule
+                    </button>
+                    <button class="schedule-button" id="chatButton">
+                        <i class="fas fa-comments"></i>Chatbot
+                    </button>
+                    <button class="schedule-button" id="addToPathBtn">
+                        <i class="fas fa-comments"></i>Add to path
+                    </button>
+                    <button class="schedule-button" id="printButton">
+                        <i class="fas fa-print"></i>Print
+                    </button>
+                    <button class="schedule-button" id="quizButton">
+                        <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIGNsYXNzPSJsdWNpZGUgbHVjaWRlLW1lc3NhZ2UtY2lyY2xlLXF1ZXN0aW9uIj48cGF0aCBkPSJNNy45IDIwQTkgOSAwIDEgMCA0IDE2LjFMMiAyMloiLz48cGF0aCBkPSJNOS4wOSA5YTMgMyAwIDAgMSA1LjgzIDFjMCAyLTMgMy0zIDMiLz48cGF0aCBkPSJNMTIgMTdoLjAxIi8+PC9zdmc+"
+                            alt="Quiz" style="width: 24px; height: 24px; vertical-align: middle;" /> Quiz
+                    </button>
+                    <button class="schedule-button" id="knightButton" onclick="goToDiscussion()"><img
+                            src="https://www.svgrepo.com/show/72141/discussion.svg" alt="Gradus"
+                            style="height: 20px; width: 20px; vertical-align: middle;" /> Discuss</button>
+                </div>
+            </div>
+
+            <div class="notes-section">
+                <div class="notes-header">
+                    <h2>Notes</h2>
+                    <button class="schedule-button" id="saveNotes" style="width: auto; padding: 8px 15px;">
+                        <i class="fas fa-save"></i> Save
+                    </button>
+                </div>
+                <textarea id="notesArea" placeholder="Add your notes here..."></textarea>
+            </div>
+        </div>
+
+        <div class="main-content" st>
+            <div class="container">
+                <div id="summary-container">
+                    <h2>Summary</h2>
+                    <div id="summary-content">
+                        <div class="loading">Generating summary...</div>
+                    </div>
+                </div>
+
+                <div id="qa-container">
+                    <h2>Questions & Answers</h2>
+                    <div id="qa-content">
+                        <div class="loading">Preparing Q&A...</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="recommended-container">
+                <div class="tags-container">
+                    <div class="tag-info">
+                        <div>
+                            <span class="tag-label">Category:</span>
+                            <span id="subjectCategoryTag" class="tag"></span>
+                        </div>
+                        <div>
+                            <span class="tag-label">Level:</span>
+                            <span id="difficultyLevelTag" class="tag"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="search-section">
+                    <h3>Similar Topic Videos</h3>
+                    <div class="videos-container">
+                        <div id="similarTopicVideos" class="video-items"></div>
+                    </div>
+                </div>
+
+                <div class="search-section">
+                    <h3>Prerequisite Videos</h3>
+                    <div class="videos-container">
+                        <div id="prerequisiteVideos" class="video-items"></div>
+                    </div>
+                </div>
+
+                <div class="search-section">
+                    <h3>Next Topic Videos</h3>
+                    <div class="videos-container">
+                        <div id="nextTopicVideos" class="video-items"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="addToPathPopup" class="popup">
+            <div class="popup-content">
+                <span class="close-popup">&times;</span>
+                <h3>Add to Playlist</h3>
+
+                <!-- Create New Category Section -->
+                <div class="playlist-section">
+                    <h4>Create New Category</h4>
+                    <input type="text" id="newCategoryName" placeholder="Enter playlist name">
+                    <input type="text" id="channelName" placeholder="Enter channel name" style="
+                    width: calc(100% - 20px);
+                    margin: 10px 0;
+                    padding: 10px;
+                    border-radius: 4px;
+                    border: 1px solid #3a3a3a;
+                    background-color: #2a2a2a;
+                    color: white;">
+                    <button id="createCategoryBtn">Create Category</button>
+                </div>
+
+                <!-- Your Categories Section -->
+                <div class="your-categories-section">
+                    <h4>Your Categories</h4>
+                    <div id="existingCategories">
+                        <!-- Categories will be populated here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+        <script type="module" src="firebase.js"></script>
+        <script type="module" src="script1.js"></script>
+        <script type="module" src="firebase-notes.js"></script>
+        <script>
+            // Update the API endpoint to use the main domain
+            const API_URL = 'https://gradus.com/api';
+
+            function goToDiscussion() {
+                // Get the video ID from the current URL
+                const urlParams = new URLSearchParams(window.location.search);
+                const videoId = urlParams.get('v'); // Assuming your video ID is in the URL as a 'v' parameter
+
+                if (videoId) {
+                    window.location.href = `https://gradus1-0-1.onrender.com//discuss/${videoId}`;
+                }
+            }
+            // Function to read user ID from file
+            async function getUserId() {
+                const urlParams = new URLSearchParams(window.location.search);
+    let userId = urlParams.get('uid');
+    
+    
+    if (!userId) {
+        const pathMatch = window.location.pathname.match(/watch\.html\?v=([^&]+)/);
+        if (pathMatch) {
+            userId = pathMatch[1];
+        }
+    }
+    
+    
+    if (!userId) {
+        console.error('No video ID found in URL');
+        return null;
+    }
+    
+    return userId;
+            }
+
+            function updateDifficultyLevel(level) {
+                const levelTag = document.getElementById('difficultyLevelTag');
+                const lowerLevel = level.toLowerCase();
+
+                // Set the text content
+                levelTag.textContent = level;
+
+                // Set the data attribute for styling
+                levelTag.setAttribute('data-level', lowerLevel);
+
+                // Directly apply the background color
+                switch (lowerLevel) {
+                    case 'beginner':
+                        levelTag.style.backgroundColor = '#4CAF50';
+                        levelTag.style.color = 'white';
+                        break;
+                    case 'intermediate':
+                        levelTag.style.backgroundColor = '#FFC107';
+                        levelTag.style.color = 'black';
+                        break;
+                    case 'advanced':
+                        levelTag.style.backgroundColor = '#F44336';
+                        levelTag.style.color = 'white';
+                        break;
+                }
+            }
+
+            // Call this function whenever you need to set the level
+            // For example:
+            document.addEventListener('DOMContentLoaded', function () {
+                // Test with your actual level
+                updateDifficultyLevel('Intermediate');
+            });
+
+            // Initialize user profile data
+            async function initializeUserProfile() {
+                // Get the user ID from UserId.txt
+                const userId = await getUserId();
+                if (!userId) {
+                    console.error('No user ID found');
+                    return;
+                }
+
+                try {
+                    // Use the firebase instance that's already loaded via script tag
+                    const userDoc = await firebase.firestore().collection('Users').doc(userId).get();
+                    if (userDoc.exists) {
+                        const userData = userDoc.data();
+
+                        // Update profile name and photo
+                        const profileName = document.querySelector('.profile-name');
+                        profileName.textContent = userData.name || 'User';
+
+                        // Update profile image
+                        const profileImages = document.querySelectorAll('.profile-image, .profile-header img');
+                        profileImages.forEach(img => {
+                            const photoUrl = userData.photo || 'default-profile-image.jpg';
+                            if (img.tagName === 'IMG') {
+                                img.src = photoUrl;
+                            } else {
+                                img.style.backgroundImage = `url('${photoUrl}')`;
+                            }
+                        });
+                    }
+                } catch (error) {
+                    console.error('Error fetching user data:', error);
+                }
+            }
+
+            // Wait for Firebase to be initialized before running the profile code
+            function initializeApp() {
+                // Initialize user profile
+                initializeUserProfile();
+
+                // Existing profile menu code
+                const profileButton = document.getElementById('profileButton');
+                const profileMenu = document.getElementById('profileMenu');
+
+                profileButton.addEventListener('click', function (e) {
+                    e.stopPropagation();
+                    profileMenu.classList.toggle('show');
+                });
+
+                // Close menu when clicking outside
+                document.addEventListener('click', function (e) {
+                    if (!profileMenu.contains(e.target)) {
+                        profileMenu.classList.remove('show');
+                    }
+                });
+            }
+
+            // Make sure Firebase is loaded before initializing
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', initializeApp);
+            } else {
+                initializeApp();
+            }
+
+            // Add to Path functionality
+            document.addEventListener('DOMContentLoaded', async function () {
+                const addToPathButton = document.getElementById('addToPathBtn');
+                const popup = document.getElementById('addToPathPopup');
+                const closePopup = document.querySelector('.close-popup');
+                const createCategoryBtn = document.getElementById('createCategoryBtn');
+                const userId = await getUserId();
+
+                if (!userId) {
+                    console.error('No user ID found');
+                    return;
+                }
+
+                // Debug log to check if elements are found
+                console.log('Add to Path Button:', addToPathButton);
+                console.log('Popup:', popup);
+
+                // Show popup when clicking Add to path button
+                if (addToPathButton) {
+                    addToPathButton.addEventListener('click', () => {
+                        console.log('Button clicked');
+                        if (popup) {
+                            popup.style.display = 'block';
+                            loadCategories();
+                        } else {
+                            console.error('Popup element not found');
+                        }
+                    });
+                } else {
+                    console.error('Add to Path button not found');
+                }
+
+                // Close popup
+                closePopup.addEventListener('click', () => {
+                    popup.style.display = 'none';
+                });
+
+                // Load existing categories
+                async function loadCategories() {
+                    const categoriesContainer = document.getElementById('existingCategories');
+                    categoriesContainer.innerHTML = ''; // Clear existing categories
+
+                    try {
+                        const userId = await getUserId();
+                        if (!userId) {
+                            console.error('No user ID found');
+                            return;
+                        }
+
+                        const userRef = firebase.firestore()
+                            .collection('Users')
+                            .doc(userId);
+
+                        console.log('Fetching user document...');
+                        const userDoc = await userRef.get();
+                        const userData = userDoc.data();
+
+                        if (!userData || !userData.savedPlaylists) {
+                            console.log('No playlists found');
+                            categoriesContainer.innerHTML = '<div class="category-item">No playlists found</div>';
+                            return;
+                        }
+
+                        // Get all saved playlists
+                        for (const [playlistId, playlistData] of Object.entries(userData.savedPlaylists)) {
+                            console.log('Creating playlist element for:', playlistData);
+                            const div = document.createElement('div');
+                            div.className = 'category-item';
+                            div.innerHTML = `
+                            <div class="category-info">
+                                <span class="category-name">${playlistData.playName}</span>
+                                <span class="channel-name">${playlistData.channelName}</span>
+                            </div>
+                            <span class="category-action">Add to this playlist →</span>
+                        `;
+
+                            div.addEventListener('click', () => addVideoToCategory(playlistId, playlistData));
+                            categoriesContainer.appendChild(div);
+                        }
+                    } catch (error) {
+                        console.error('Error loading categories:', error);
+                        categoriesContainer.innerHTML = '<div class="category-item">Error loading categories</div>';
+                    }
+                }
+
+                // Add this function to get video ID from URL
+                function getVideoIdFromUrl() {
+                    const urlParams = new URLSearchParams(window.location.search);
+                    return urlParams.get('v');
+                }
+
+                // Update addVideoToCategory function
+                async function addVideoToCategory(playlistId, playlistData) {
+                    try {
+                        const userId = await getUserId();
+                        if (!userId) {
+                            console.error('No user ID found');
+                            return;
+                        }
+
+                        // Get video ID from URL
+                        const videoId = getVideoIdFromUrl();
+                        if (!videoId) {
+                            throw new Error('No video ID found in URL');
+                        }
+
+                        // Get video title from the page
+                        const videoTitle = document.getElementById('videoTitle').textContent;
+                        const channelName = playlistData.channelName;
+
+                        // Create video details object
+                        const videoDetails = {
+                            videoId: videoId,
+                            channelName: channelName,
+                            playThumbnail: `https://i.ytimg.com/vi/${videoId}/mqdefault.jpg`,
+                            seen: false,
+                            title: videoTitle
+                        };
+
+                        // Add video to the savedPlaylists collection
+                        const userRef = firebase.firestore().collection('Users').doc(userId);
+
+                        // Update the videos array in the savedPlaylists
+                        await userRef.update({
+                            [`savedPlaylists.${playlistId}.videos.${videoId}`]: videoDetails
+                        });
+
+                        console.log('Video added successfully to playlist:', playlistId);
+                        alert('Video added successfully to playlist!');
+                        document.getElementById('addToPathPopup').style.display = 'none';
+                    } catch (error) {
+                        console.error('Error adding video:', error);
+                        alert(`Failed to add video: ${error.message}`);
+                    }
+                }
+
+                // Update createCategoryBtn click handler
+                createCategoryBtn.addEventListener('click', async () => {
+                    const playName = document.getElementById('newCategoryName').value.trim();
+                    const channelName = document.getElementById('channelName').value.trim();
+
+                    if (!playName) {
+                        alert('Please enter a playlist name');
+                        return;
+                    }
+
+                    if (!channelName) {
+                        alert('Please enter a channel name');
+                        return;
+                    }
+
+                    try {
+                        const userId = await getUserId();
+                        if (!userId) {
+                            console.error('No user ID found');
+                            return;
+                        }
+
+                        // Get video ID from URL
+                        const videoId = getVideoIdFromUrl();
+                        if (!videoId) {
+                            throw new Error('No video ID found in URL');
+                        }
+
+                        // Get video title
+                        const videoTitle = document.getElementById('videoTitle').textContent;
+
+                        // Generate a unique playlist ID
+                        const playlistId = firebase.firestore().collection('Users').doc().id;
+
+                        // Create the video details
+                        const videoDetails = {
+                            videoId: videoId,
+                            channelName: channelName,
+                            playThumbnail: `https://i.ytimg.com/vi/${videoId}/mqdefault.jpg`,
+                            seen: false,
+                            title: videoTitle
+                        };
+
+                        // Create the playlist data with the video
+                        const playlistData = {
+                            channelName: channelName,
+                            playName: playName,
+                            playThumbnail: `https://i.ytimg.com/vi/${videoId}/mqdefault.jpg`,
+                            savedAt: firebase.firestore.FieldValue.serverTimestamp(),
+                            videos: {
+                                [videoId]: videoDetails
+                            }
+                        };
+
+                        // Add the new playlist to savedPlaylists
+                        const userRef = firebase.firestore().collection('Users').doc(userId);
+                        await userRef.update({
+                            [`savedPlaylists.${playlistId}`]: playlistData
+                        });
+
+                        console.log('Playlist created with video:', playlistId);
+                        alert('Playlist created and video added successfully!');
+
+                        // Clear both input fields
+                        document.getElementById('newCategoryName').value = '';
+                        document.getElementById('channelName').value = '';
+
+                        loadCategories();
+                    } catch (error) {
+                        console.error('Error creating playlist:', error);
+                        alert(`Failed to create playlist: ${error.message}`);
+                    }
+                });
+            });
+
+            // Add this outside the DOMContentLoaded event to check if script is running
+            console.log('Script loaded');
+
+            // Update the quiz button click handler
+            document.getElementById('quizButton').addEventListener('click', function () {
+                const videoId = new URLSearchParams(window.location.search).get('v');
+                if (videoId) {
+                    window.location.href = `./Chatbot/quiz.html?v=${videoId}`;
+                } else {
+                    console.error('No video ID found in URL');
+                    alert('Error: Could not find video ID');
+                }
+            });
+        </script>
+    </body>
+
+</html>

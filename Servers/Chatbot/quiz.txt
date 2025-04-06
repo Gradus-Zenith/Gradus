@@ -1,0 +1,69 @@
+1.  Considering the video title and description, what is the primary objective of this introductory Python course?
+   A) To provide advanced Python programming techniques for experienced developers.
+   B) To offer a comprehensive overview of various computer science topics.
+   C) To introduce fundamental Python concepts to individuals new to programming.
+   D) To delve into specialized applications of Python in data science and machine learning.
+   Answer: C
+
+2.  Based on the provided links, which of the following supplementary resources is offered alongside the Python course?
+   A) Interactive coding platforms for hands-on practice.
+   B) Downloadable course materials and project files.
+   C) Playlists covering related computer science subjects like C++, Data Structures, and DBMS.
+   D) Direct access to instructors for personalized mentorship and support.
+   Answer: C
+
+3.  The inclusion of social media links in the description primarily suggests an intention to:
+   A) Divert viewers away from the core course content towards unrelated platforms.
+   B) Establish a community and facilitate ongoing engagement beyond the video itself.
+   C) Monetize personal branding efforts independently from the educational content.
+   D) Replace the need for direct interaction within the video's comment section.
+   Answer: B
+
+4.  Given the context of "Introduction to Python Course | Python for beginners," what level of prior programming experience is ideally assumed for the target audience?
+   A) Extensive experience in multiple programming languages.
+   B) Intermediate knowledge of object-oriented programming principles.
+   C) Little to no prior experience in programming.
+   D) Advanced understanding of scripting languages and automation.
+   Answer: C
+
+5.  The listing of playlists for subjects like 'C', 'C++', 'Data Structures', and 'Operating Systems' alongside the Python course introduction implies:
+   A) The Python course will assume prior mastery of these listed subjects.
+   B) These subjects are prerequisites that must be completed before starting the Python course.
+   C) The channel offers a broader computer science curriculum, of which Python is an introductory part.
+   D) The Python course will extensively cover these subjects within its syllabus.
+   Answer: C
+
+6.  What can be inferred about the format of the "Introduction to Python Course" based on the provided information?
+   A) It is a text-based course delivered through written documentation.
+   B) It is primarily an audio-based course with minimal visual aids.
+   C) It is likely a video-based course, given it's presented on a video platform.
+   D) It is an interactive, live-session based course with real-time coding exercises.
+   Answer: C
+
+7.  Considering the title and description, the primary benefit a beginner is expected to gain from this Python course is:
+   A) Immediate proficiency in developing complex software applications.
+   B) A foundational understanding of Python programming for further learning.
+   C) Certification in Python programming recognized by industry standards.
+   D) Guaranteed placement in software engineering roles upon course completion.
+   Answer: B
+
+8.  The use of hashtags like '#python #completecourse #jennyslectures' primarily serves to:
+   A) Confuse viewers with irrelevant keywords.
+   B) Categorize the video for searchability and broader discoverability.
+   C) Indicate that the course is incomplete and requires further modules.
+   D) Limit the audience to individuals already familiar with these specific terms.
+   Answer: B
+
+9.  Based on the description, the video aims to address which primary question for prospective Python learners?
+   A) The advanced applications of Python in specialized domains.
+   B) The prerequisites and necessary background for learning Python.
+   C) The expected learning outcomes and content of the Python course.
+   D) The comparative advantages of Python over other programming languages.
+   Answer: C
+
+10. The inclusion of links to platforms like Facebook, Quora, Instagram, and Twitter suggests the course creator aims to:
+    A) Limit communication to a single preferred social media platform.
+    B) Encourage learners to solely focus on social media interactions rather than course content.
+    C) Foster a multi-platform presence for broader engagement and updates related to the course and other content.
+    D) Replace direct communication channels with indirect social media interactions.
+    Answer: C

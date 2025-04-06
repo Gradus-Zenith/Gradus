@@ -1,0 +1,140 @@
+  /* Add navbar styles */
+  .navbar {
+    width: 1670px;
+    height: 65px;
+    opacity: 1;
+    background-color: #505050;
+    position: fixed;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1000;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px;
+  }
+
+  .navbarLogo {
+    height: 40px;
+  }
+
+  .navbarButtons {
+    display: flex;
+    gap: 20px;
+  }
+
+  .gradusText {
+    height: 60px;
+    width: 190px;
+    font-size: 40px;
+    margin-left: 120px;
+    font-weight: 500;
+    text-decoration: none;
+    font-family: 'Outfit', sans-serif;
+  }
+
+  .switchButton {
+    padding: 12px 32px;
+    border-radius: 30px;
+    border: 2px solid #000000;
+    background-color: white;
+    color: #000000;
+    cursor: pointer;
+    font-size: 18px;
+    font-weight: 600;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transition: all 0.2s ease;
+    margin-right: 15px;
+    margin-top: 5px;
+    letter-spacing: 0.5px;
+  }
+
+  .switchButton:hover {
+    background-color: #f0f0f0;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.25);
+    transform: translateY(-5px);
+  }
+
+  .profileContainer {
+    position: relative;
+    margin-right: 150px;
+  }
+
+  .profileImage {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background-color: #808080;
+    cursor: pointer;
+  }
+
+
+  .profilePopup {
+    position: absolute;
+    top: 60px;
+    right: 0;
+    width: 300px;
+    background-color: #1e2329;
+    border-radius: 10px;
+    border: 2px solid rgb(157, 250, 157);
+    padding: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    visibility: hidden;
+    opacity: 0;
+    transform: translateY(-10px);
+    transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s;
+  }
+
+  .profilePopup.show {
+    visibility: visible;
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+
+
+
+
+
+  .profileHeader {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+
+  }
+
+  .profileHeader .Img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    margin-right: 15px;
+  }
+
+  .profileName {
+    font-size: 30px;
+    position: relative;
+    right: 13px;
+  }
+
+  .viewProfile {
+    font-size: 14px;
+    opacity: 0.8;
+    position: relative;
+    right: 13px;
+  }
+
+  .menuItem {
+    color: white;
+    padding: 15px;
+    margin: 8px 0;
+    border-radius: 10px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .menuItem:hover {
+    background-color: #323131;
+  }
