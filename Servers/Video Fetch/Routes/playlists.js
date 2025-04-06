@@ -5,11 +5,11 @@ import { admin, db } from "./firebase.js";
 
 const playlistRouter = express.Router();
 
-const YT_KEY_5 = "AIzaSyBlwGcgF4mmb1bq7phB3N0z3_3RR2VxRY4"
+const YT_KEY_5 = process.env.YT_KEY_5
 
 playlistRouter.get('/playlist/:playlistId', async (req, res) => {
     try {
-      const YOUR_API_KEY = "AIzaSyAMZBDBbRut3BErSVA-Jbp9UReBzS-R1jk";
+      const YOUR_API_KEY = process.env.YT_KEY_5;
       const {playlistId} = req.params;
       console.log(playlistId)
       const {pageToken} = req.query || null;

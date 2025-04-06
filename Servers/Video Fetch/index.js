@@ -11,11 +11,11 @@ app.use(json());
 app.use(cors());
 
 const PORT = process.env.PORT || 4000;
-const YT_KEY = "AIzaSyBhqisQwysrc32AgpT20fihpTgYLz-zi0Y"
-const YT_KEY_2 = "AIzaSyBIHir9Hydj_VsvABVNLP83Lq4i-WUtY48"
-const YT_KEY_3 = "IzaSyCQNypOZ9LuT1b882QCRlB_MMjxjd8qxQQ"
-const API_KEY_4 = "AIzaSyCFKBklkmaFcSoyjRUXxMMwyZutg5egppM"
-const YT_KEY_5 = "AIzaSyBlwGcgF4mmb1bq7phB3N0z3_3RR2VxRY4"
+const YT_KEY = process.env.YT_KEY
+const YT_KEY_2 = process.env.YT_KEY_2
+const YT_KEY_3 = process.env.YT_KEY_3
+const API_KEY_4 = process.env.API_KEY_4
+const YT_KEY_5 = process.env.YT_KEY_5
 
 app.use('/', searchRouter)
 app.use('/', videosRouter)
